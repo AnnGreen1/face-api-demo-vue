@@ -11,22 +11,46 @@ import HelloWorld from "@/components/HelloWorld.vue";
       <div>
         由于浏览器隐私安全权限问题可能导致无法调用摄像头，需要<mark>HTTPS</mark>认证，电脑端可用<mark>127.0.0.1</mark>访问。
       </div>
+      <!-- 分割线 -->
+      <hr />
+      <a
+        href="https://env-00jxgaqjulpu-static.normal.cloudstatic.cn/face-api-demo-vue/index.html#/"
+      >
+        本人在线示例-aliyun
+      </a>
+      <br />
+      <a href="https://face-api-demo-vue-mu.vercel.app/">
+        本人在线示例-vercel
+      </a>
+      <br />
       <a href="https://github.com/TsMask/face-api-demo">
         本人仓库 browser 示例 0.13.8 含 dist/文档/模型/示例
+      </a>
+      <br />
+      <a href="https://github.com/justadudewhohacks/face-api.js">
+        GitHub 原作者识别库源码
       </a>
       <br />
       <a
         href="https://justadudewhohacks.github.io/face-api.js/docs/globals.html"
       >
-        face-api仓库 API文档
+        GitHub 原作者face-api 使用文档
       </a>
       <br />
       <a href="https://justadudewhohacks.github.io/face-api.js">
-        face-api作者 在线示例
+        GitHub 原作者在线示例
       </a>
       <br />
-      <a href="https://github.com/justadudewhohacks/face-api.js">
-        face-api作者 Github
+      <a href="https://github.com/vladmandic/face-api">
+        GitHub 升级版识别库源码
+      </a>
+      <br />
+      <a href="https://vladmandic.github.io/face-api/typedoc/index.html">
+        GitHub 升级版face-api 使用文档
+      </a>
+      <br />
+      <a href="https://vladmandic.github.io/face-api/demo/index.html">
+        GitHub 升级版在线示例
       </a>
     </div>
 

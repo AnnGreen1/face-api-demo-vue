@@ -1,5 +1,5 @@
 <script setup>
-import * as faceapi from "face-api.js";
+import * as faceapi from "@vladmandic/face-api";
 import { onMounted, reactive } from "vue";
 
 /**属性状态 */
@@ -11,28 +11,28 @@ const state = reactive({
     {
       name: "张伟",
       imgs: [
-        "/images/zw/zw01.jpg",
-        "/images/zw/zw02.jpg",
-        "/images/zw/zw03.jpg",
-        "/images/zw/zw04.jpg",
+        `/images/zw/zw01.jpg`,
+        `/images/zw/zw02.jpg`,
+        `/images/zw/zw03.jpg`,
+        `/images/zw/zw04.jpg`,
       ],
     },
     {
       name: "曾小贤",
       imgs: [
-        "/images/zxx/zxx01.jpg",
-        "/images/zxx/zxx02.jpg",
-        "/images/zxx/zxx03.jpg",
-        "/images/zxx/zxx04.jpg",
+        `/images/zxx/zxx01.jpg`,
+        `/images/zxx/zxx02.jpg`,
+        `/images/zxx/zxx03.jpg`,
+        `/images/zxx/zxx04.jpg`,
       ],
     },
   ],
   // 匹配图，支持本地，网络，beas64
   detArr: [
-    "/images/zw/zw02.jpg",
-    "/images/zw/zw04.jpg",
-    "/images/zxx/zxx02.jpg",
-    "/images/zxx/zxx04.jpg",
+    `/images/zw/zw02.jpg`,
+    `/images/zw/zw04.jpg`,
+    `/images/zxx/zxx02.jpg`,
+    `/images/zxx/zxx04.jpg`,
   ],
   // 匹配结果
   resultArr: [],
@@ -42,8 +42,21 @@ const state = reactive({
 
 /**初始化模型加载 */
 async function fnLoadModel() {
+  // 模型文件访问路径
+  const modelsPath = `/models`;
   // 面部识别模型
-  await faceapi.loadFaceRecognitionModel("/models");
+  await faceapi.nets.faceRecognitionNet.load(modelsPath);
+
+  // 输出库版本
+  console.log(
+    `FaceAPI Version: ${
+      faceapi?.version || "(not loaded)"
+    } \nTensorFlow/JS Version: ${
+      faceapi.tf?.version_core || "(not loaded)"
+    } \nBackend: ${
+      faceapi.tf?.getBackend() || "(not loaded)"
+    } \nModels loaded: ${faceapi.tf.engine().state.numTensors} tensors`
+  );
 
   // 关闭模型加载
   state.netsLoadModel = false;

@@ -1,5 +1,5 @@
 <script setup>
-import * as faceapi from "face-api.js";
+import * as faceapi from "@vladmandic/face-api";
 import { onMounted, reactive } from "vue";
 
 /**属性状态 */
@@ -20,8 +20,21 @@ const state = reactive({
 
 /**初始化模型加载 */
 async function fnLoadModel() {
+  // 模型文件访问路径
+  const modelsPath = `/models`;
   // 面部识别模型
-  await faceapi.loadFaceRecognitionModel("/models");
+  await faceapi.nets.faceRecognitionNet.load(modelsPath);
+
+  // 输出库版本
+  console.log(
+    `FaceAPI Version: ${
+      faceapi?.version || "(not loaded)"
+    } \nTensorFlow/JS Version: ${
+      faceapi.tf?.version_core || "(not loaded)"
+    } \nBackend: ${
+      faceapi.tf?.getBackend() || "(not loaded)"
+    } \nModels loaded: ${faceapi.tf.engine().state.numTensors} tensors`
+  );
 
   // 节点元素
   state.targetImgEl = document.getElementById("page_draw-img-target");
