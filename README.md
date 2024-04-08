@@ -2,41 +2,50 @@
 
 使用 `Vue` 框架搭建演示，`H5`、`Web`、`NodeJS` 实现人脸检测识别，基于 `TensorFlowJS` 实现的 `face-api.js` 人脸识别库。
 
-模型文件放在 `public/models` 目录下，部署时请确保网络路径能访问到模型文件。
+识别模型文件放在 `public/models` 目录下，部署时请确保网络路径能访问到模型文件。
 
-npm 主要安装以下：
+npm 主要安装识别库：
 
 ```shell
-npm i --save face-api.js
+# 升级版作者库
+npm i --save @vladmandic/face-api
+# 原作者库
+# npm i --save face-api.js
 ```
+
+安装识别库库后在 `node_modules/@vladmandic/face-api/model` 可以拿到模型文件。
 
 - [本人在线示例-aliyun](https://env-00jxgaqjulpu-static.normal.cloudstatic.cn/face-api-demo-vue/index.html#/)
 - [本人在线示例-vercel](https://face-api-demo-vue-mu.vercel.app/)
 - [本人仓库 browser 示例 0.13.8 含 dist/文档/模型/示例](https://github.com/TsMask/face-api-demo)
-- [GitHub face-api 使用文档](https://justadudewhohacks.github.io/face-api.js/docs/globals.html)
-- [GitHub 作者识别库源码](https://github.com/justadudewhohacks/face-api.js)
-- [GitHub 作者在线示例](https://justadudewhohacks.github.io/face-api.js)
+- [GitHub 原作者face-api 使用文档](https://justadudewhohacks.github.io/face-api.js/docs/globals.html)
+- [GitHub 原作者识别库源码](https://github.com/justadudewhohacks/face-api.js)
+- [GitHub 原作者在线示例](https://justadudewhohacks.github.io/face-api.js)
+- [GitHub 升级版作者face-api 使用文档](https://vladmandic.github.io/face-api/typedoc/index.html)
+- [GitHub 升级版作者识别库源码](https://github.com/vladmandic/face-api)
+- [GitHub 升级版作者在线示例](https://vladmandic.github.io/face-api/demo/index.html)
 
 ## 其他
 
-### 使用前引入模型
-
-[关于mtcnn模型弃用](https://github.com/justadudewhohacks/face-api.js/issues/511)
-
 ```js
 console.log(faceapi.nets);
-// ageGenderNet
-// faceExpressionNet
-// faceLandmark68Net
-// faceLandmark68TinyNet
-// faceRecognitionNet
-// ssdMobilenetv1
-// tinyFaceDetector
-// tinyYolov2
+// const nets: {
+//     ssdMobilenetv1: SsdMobilenetv1;
+//     tinyFaceDetector: TinyFaceDetector;
+//     tinyYolov2: TinyYolov2;
+//     faceLandmark68Net: FaceLandmark68Net;
+//     faceLandmark68TinyNet: FaceLandmark68TinyNet;
+//     faceRecognitionNet: FaceRecognitionNet;
+//     faceExpressionNet: FaceExpressionNet;
+//     ageGenderNet: AgeGenderNet;
+// }
+//
 // 放在public/models内
-// 通过url地址访问
+// 载入模型
+// await faceapi.nets.ssdMobilenetv1.load("/models");
+// 通过url地址
 // await faceapi.nets.ssdMobilenetv1.loadFromUri("/models");
-// 本地路径
+// 本地相对路径
 // await faceapi.nets.ssdMobilenetv1.loadFromDisk("../../public/models");
 ```
 
@@ -61,14 +70,18 @@ const detections2 = await faceapi.detectSingleFace(输入, 使用的模型参数
 ### 识别库工具
 
 ```js
-// 请求json格式文件数据
+// 请求json格式文件数据 Any
 const json = await faceapi.fetchJson("http://www.example.com/file/example.json");
+// 请求视频文件 HTMLImageElement
+const imageEl = await faceapi.fetchImage("http://www.example.com/file/example.jpg");
+// 请求视频文件 HTMLVideoElement
+const videoEl = await faceapi.fetchVideo("http://www.example.com/file/example.mp4");
 
 // 从Blob/File对象创建HTMLImageElement
-const imgEl = await faceapi.bufferToImage(imgFile);
+const imageEl = await faceapi.bufferToImage(fileBlob);
 
 // 从图像或视频元素创建画布元素
-const canvas = faceapi.createCanvasFromMedia(HTMLImageElement | HTMLVideoElement)
+const canvasEl = faceapi.createCanvasFromMedia(HTMLImageElement | HTMLVideoElement)
 ```
 
 ----
@@ -97,26 +110,29 @@ const canvas = faceapi.createCanvasFromMedia(HTMLImageElement | HTMLVideoElement
 编译执行环境：
 
 - NodeJS：`nodejs@18.16.0`
-- Vite 脚手架：`vite@5.2.3`
-- Vue：`vue@3.4.20`
-- face-api：`face-api.js@0.22.2`
+- Vite：`vite@5.2.8`
+- Vue：`vue@3.4.21`
+- VueRouter：`vue-router@4.3.0`
+- face-api：`@vladmandic/face-api@1.7.13`
 
 ## 项目结构
 
 ```text
 face-api-demo-vue
-┌─public                  应用引用静态资源的目录
+┌─public                  目录-静态资源
 ├─src
-│ ├─components            复用组件目录
-│ ├─router                页面路由配置文件目录
-│ ├─utils                 常用函数工具文件目录
-│ ├─views                 页面视图文件目录
-│ ├─App.vue               配置App全局应用页面
-│ └─main.js               Vue初始化入口文件
-├─babel.config.js         Babel格式规范化配置
-├─package-lock.json       依赖版本校验信息
-├─package.json            项目依赖包、编译配置
-└─README.md               项目说明
+│ ├─assets                目录-编译资源
+│ ├─components            目录-复用组件
+│ ├─router                目录-页面路由配置
+│ ├─utils                 目录-常用函数工具
+│ ├─views                 目录-页面视图
+│ ├─App.vue               文件-配置App全局
+│ └─main.js               文件-Vue初始化
+├─index.html              文件-页面容器
+├─package-lock.json       文件-项目依赖版本锁
+├─package.json            文件-项目信息
+├─README.md               文件-项目说明
+└─vite.config.js          文件-Vite配置
 ```
 
 ## Project setup / 项目依赖安装初始化
