@@ -78,12 +78,9 @@ async function fnLoadModel() {
 
   // 输出库版本
   console.log(
-    `FaceAPI Version: ${
-      faceapi?.version || "(not loaded)"
-    } \nTensorFlow/JS Version: ${
-      faceapi.tf?.version_core || "(not loaded)"
-    } \nBackend: ${
-      faceapi.tf?.getBackend() || "(not loaded)"
+    `FaceAPI Version: ${faceapi?.version || "(not loaded)"
+    } \nTensorFlow/JS Version: ${faceapi.tf?.version_core || "(not loaded)"
+    } \nBackend: ${faceapi.tf?.getBackend() || "(not loaded)"
     } \nModels loaded: ${faceapi.tf.engine().state.numTensors} tensors`
   );
 
@@ -119,6 +116,7 @@ async function fnRedraw() {
     // 需引入年龄性别模型
     .withAgeAndGender();
 
+  console.log("detect", detect);
   // 无识别数据时，清除定时重新再次识别
   if (!detect) {
     clearTimeout(state.timer);
@@ -280,13 +278,7 @@ onUnmounted(() => {
     <div class="page_load" v-show="state.netsLoadModel">Load Model...</div>
     <div class="page_draw" v-show="!state.netsLoadModel">
       <div class="page_draw" v-show="!state.netsLoadModel">
-        <video
-          id="page_draw-video"
-          poster="/images/720x480.png"
-          src="/videos/test.mp4"
-          muted
-          playsinline
-        ></video>
+        <video id="page_draw-video" poster="/images/720x480.png" src="/videos/test.mp4" muted playsinline></video>
         <canvas id="page_draw-video-canvas"></canvas>
       </div>
     </div>

@@ -100,6 +100,10 @@ async function fnLoadModel() {
 /**根据模型参数识别绘制--目标图 */
 async function fnRedrawTarget() {
   console.log("Run Redraw Target");
+  /**
+   * @author: AnnGreen1
+   * 是不是调用多次这个函数就能实现？（每张照片处理一次，最后把 detect 拼接成一个数组）
+   */
   const detect = await faceapi
     .detectAllFaces(state.targetImgEl, state.netsOptions[state.netsType])
     // 需引入面部轮廓模型
@@ -149,6 +153,10 @@ async function fnRedrawDiscern() {
 
   // 无识别数据时，清除定时重新再次识别
   if (!detect) {
+    /**
+     * todo 
+     * 
+     */
     clearTimeout(state.timer);
     state.timer = 0;
     fnRedrawDiscern();
@@ -164,7 +172,7 @@ async function fnRedrawDiscern() {
   const result = faceapi.resizeResults(detect, dims);
   result.forEach(({ detection, descriptor }) => {
     // 最佳匹配 distance越小越匹配
-    const best = state.faceMatcher.findBestMatch(descriptor);
+    const best = state.faceMatcher.findBestMatch(descriptor);/** @author: AnnGreen1 state.faceMatcher 里就保存着从图片中识别出的所有人脸数据 */
     // 识别图绘制框
     const label = best.toString();
     new faceapi.draw.DrawBox(detection.box, { label }).draw(
@@ -173,7 +181,7 @@ async function fnRedrawDiscern() {
   });
 
   // 定时器句柄
-  state.timer = setTimeout(() => fnRedrawDiscern(), 0);
+  state.timer = setTimeout(() => fnRedrawDiscern(), 0);/** @author: AnnGreen1 主要是为了异步执行 */
 }
 
 /**启动摄像头视频媒体 */
