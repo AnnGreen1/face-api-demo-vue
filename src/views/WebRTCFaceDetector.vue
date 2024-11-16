@@ -164,6 +164,12 @@ async function fnRedraw() {
     }
   }
 
+  /**
+   * @author: AnnGreen1
+   * fnRedraw 啊还能输手机上是递归调用的，使用 setTimeout 包装一下和直接调用是同步和异步的区别
+   * setTimeout(fun,0) 的作用是等同步任务执行完成后最先执行这个异步任务
+   * 把这一行代码注释后人脸识别就只能有一次了
+   */
   // 定时器句柄
   state.timer = setTimeout(() => fnRedraw(), 0);
 }
@@ -279,6 +285,7 @@ onUnmounted(() => {
     <div class="page_draw" v-show="!state.netsLoadModel">
       <div class="page_draw" v-show="!state.netsLoadModel">
         <video id="page_draw-video" poster="/images/720x480.png" src="/videos/test.mp4" muted playsinline></video>
+        <!-- canvas 用来绘制特征点-->
         <canvas id="page_draw-video-canvas"></canvas>
       </div>
     </div>

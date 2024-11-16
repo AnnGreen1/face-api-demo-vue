@@ -78,12 +78,9 @@ async function fnLoadModel() {
 
   // 输出库版本
   console.log(
-    `FaceAPI Version: ${
-      faceapi?.version || "(not loaded)"
-    } \nTensorFlow/JS Version: ${
-      faceapi.tf?.version_core || "(not loaded)"
-    } \nBackend: ${
-      faceapi.tf?.getBackend() || "(not loaded)"
+    `FaceAPI Version: ${faceapi?.version || "(not loaded)"
+    } \nTensorFlow/JS Version: ${faceapi.tf?.version_core || "(not loaded)"
+    } \nBackend: ${faceapi.tf?.getBackend() || "(not loaded)"
     } \nModels loaded: ${faceapi.tf.engine().state.numTensors} tensors`
   );
 
@@ -150,6 +147,10 @@ async function fnRedrawDiscern() {
     .withFaceLandmarks()
     // 需引入面部识别模型
     .withFaceDescriptors();
+
+  // @author: AnnGreen1 所有的结果，不管是不是目标图片
+  console.log("detect", detect);
+
 
   // 无识别数据时，清除定时重新再次识别
   if (!detect) {
@@ -261,11 +262,7 @@ onUnmounted(() => {
     <div class="page_option">
       <div>
         <label>更换目标图片：</label>
-        <input
-          type="file"
-          accept="image/png, image/jpeg"
-          @change="fnChangeTarget($event)"
-        />
+        <input type="file" accept="image/png, image/jpeg" @change="fnChangeTarget($event)" />
       </div>
       <div>
         <label>摄像头视频媒体：</label>
@@ -300,13 +297,7 @@ onUnmounted(() => {
       </div>
       <h3>识别匹配视频：</h3>
       <div class="page_draw-discern">
-        <video
-          id="page_draw-video"
-          poster="/images/720x480.png"
-          src="/videos/test.mp4"
-          muted
-          playsinline
-        ></video>
+        <video id="page_draw-video" poster="/images/720x480.png" src="/videos/test.mp4" muted playsinline></video>
         <canvas id="page_draw-video-canvas"></canvas>
       </div>
     </div>
